@@ -2,8 +2,15 @@ import React, { Component } from 'react';
 import Header from '../component/header';
 
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as AddToCart from '../redux/actions/cart-action';
 
 class Products extends Component {
+
+  onAddProduct(product){
+    this.props.action.addToCart(product)
+  }
+
   render() {
     const list = this.props.products.map((value, index) => {
       return(
@@ -20,6 +27,7 @@ class Products extends Component {
           <span>Product Description :</span>
           <span>$ {value.product_description}</span>
         </div>
+        <button class="waves-effect waves-light btn" onClick={() => this.onAddProduct(value)}>Add To Cart</button>
         </div>
       )
     })
@@ -41,7 +49,9 @@ function mapStateToProps(state){
 }
 
 function mapDispatchToProps(dispatch){
-  return{}
+  return{
+    action : bindActionCreators(AddToCart, dispatch)
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Products);
